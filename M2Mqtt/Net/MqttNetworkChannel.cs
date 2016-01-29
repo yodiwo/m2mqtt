@@ -56,7 +56,7 @@ namespace uPLibrary.Networking.M2MqttClient
         private X509Certificate clientCert;
 
         // SSL/TLS protocol version
-        private MqttSslProtocols sslProtocol;
+        private SslProtocols sslProtocol;
 
         /// <summary>
         /// Remote host name
@@ -112,9 +112,9 @@ namespace uPLibrary.Networking.M2MqttClient
         /// <param name="socket">Socket opened with the client</param>
         public MqttNetworkChannel(Socket socket)
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
-            : this(socket, false, null, MqttSslProtocols.None, null, null)
+            : this(socket, false, null, SslProtocols.None, null, null)
 #else
-            : this(socket, false, null, MqttSslProtocols.None)
+            : this(socket, false, null, SslProtocols.None)
 #endif
         {
 
@@ -130,11 +130,11 @@ namespace uPLibrary.Networking.M2MqttClient
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
         /// <param name="userCertificateSelectionCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateValidationCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
-        public MqttNetworkChannel(Socket socket, bool secure, X509Certificate serverCert, MqttSslProtocols sslProtocol,
+        public MqttNetworkChannel(Socket socket, bool secure, X509Certificate serverCert, SslProtocols sslProtocol,
             RemoteCertificateValidationCallback userCertificateValidationCallback,
             LocalCertificateSelectionCallback userCertificateSelectionCallback)
 #else
-        public MqttNetworkChannel(Socket socket, bool secure, X509Certificate serverCert, MqttSslProtocols sslProtocol)
+        public MqttNetworkChannel(Socket socket, bool secure, X509Certificate serverCert, SslProtocols sslProtocol)
 #endif
         {
             this.socket = socket;
@@ -154,9 +154,9 @@ namespace uPLibrary.Networking.M2MqttClient
         /// <param name="remotePort">Remote port</param>
         public MqttNetworkChannel(string remoteHostName, int remotePort)
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
-            : this(remoteHostName, remotePort, false, null, null, MqttSslProtocols.None, null, null)
+            : this(remoteHostName, remotePort, false, null, null, SslProtocols.None, null, null)
 #else
-            : this(remoteHostName, remotePort, false, null, null, MqttSslProtocols.None)
+            : this(remoteHostName, remotePort, false, null, null, SslProtocols.None)
 #endif
         {
         }
@@ -173,11 +173,11 @@ namespace uPLibrary.Networking.M2MqttClient
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
         /// <param name="userCertificateSelectionCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateValidationCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
-        public MqttNetworkChannel(string remoteHostName, int remotePort, bool secure, X509Certificate caCert, X509Certificate clientCert, MqttSslProtocols sslProtocol,
+        public MqttNetworkChannel(string remoteHostName, int remotePort, bool secure, X509Certificate caCert, X509Certificate clientCert, SslProtocols sslProtocol,
             RemoteCertificateValidationCallback userCertificateValidationCallback,
             LocalCertificateSelectionCallback userCertificateSelectionCallback)
 #else
-        public MqttNetworkChannel(string remoteHostName, int remotePort, bool secure, X509Certificate caCert, X509Certificate clientCert, MqttSslProtocols sslProtocol)
+        public MqttNetworkChannel(string remoteHostName, int remotePort, bool secure, X509Certificate caCert, X509Certificate clientCert, SslProtocols sslProtocol)
 #endif
         {
             IPAddress remoteIpAddress = null;
@@ -257,7 +257,7 @@ namespace uPLibrary.Networking.M2MqttClient
 
                 this.sslStream.AuthenticateAsClient(this.remoteHostName,
                     clientCertificates,
-                    MqttSslUtility.ToSslPlatformEnum(this.sslProtocol),
+                    this.sslProtocol,
                     false);
                 
 #endif
@@ -392,7 +392,7 @@ namespace uPLibrary.Networking.M2MqttClient
                 this.netStream = new NetworkStream(this.socket);
                 this.sslStream = new SslStream(this.netStream, false, this.userCertificateValidationCallback, this.userCertificateSelectionCallback);
 
-                this.sslStream.AuthenticateAsServer(this.serverCert, false, MqttSslUtility.ToSslPlatformEnum(this.sslProtocol), false);
+                this.sslStream.AuthenticateAsServer(this.serverCert, false, this.sslProtocol, false);
 #endif
             }
 
