@@ -15,6 +15,8 @@ Contributors:
 */
 
 using System.Collections;
+using uPLibrary.Networking.M2MqttClient.Messages;
+using Yodiwo;
 
 namespace uPLibrary.Networking.M2MqttClient.Session
 {
@@ -31,7 +33,7 @@ namespace uPLibrary.Networking.M2MqttClient.Session
         /// <summary>
         /// Messages inflight during session
         /// </summary>
-        public Hashtable InflightMessages { get; set; }
+        public DictionaryTS<string, MqttMsgContext> InflightMessages { get; set; }
 
         /// <summary>
         /// Constructor
@@ -48,7 +50,7 @@ namespace uPLibrary.Networking.M2MqttClient.Session
         public MqttSession(string clientId)
         {
             this.ClientId = clientId;
-            this.InflightMessages = new Hashtable();
+            this.InflightMessages = new DictionaryTS<string, MqttMsgContext>();
         }
 
         /// <summary>
