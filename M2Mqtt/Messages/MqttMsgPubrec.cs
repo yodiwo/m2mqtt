@@ -14,9 +14,9 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-using uPLibrary.Networking.M2Mqtt.Exceptions;
+using uPLibrary.Networking.M2MqttClient.Exceptions;
 
-namespace uPLibrary.Networking.M2Mqtt.Messages
+namespace uPLibrary.Networking.M2MqttClient.Messages
 {
     /// <summary>
     /// Class for PUBREC message from broker to client

@@ -21,11 +21,11 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 #endif
 using System.Threading;
-using uPLibrary.Networking.M2Mqtt.Exceptions;
-using uPLibrary.Networking.M2Mqtt.Messages;
-using uPLibrary.Networking.M2Mqtt.Session;
-using uPLibrary.Networking.M2Mqtt.Utility;
-using uPLibrary.Networking.M2Mqtt.Internal;
+using uPLibrary.Networking.M2MqttClient.Exceptions;
+using uPLibrary.Networking.M2MqttClient.Messages;
+using uPLibrary.Networking.M2MqttClient.Session;
+using uPLibrary.Networking.M2MqttClient.Utility;
+using uPLibrary.Networking.M2MqttClient.Internal;
 // if .Net Micro Framework
 #if (MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3)
 using Microsoft.SPOT;
@@ -49,10 +49,10 @@ using System.Collections;
 
 // alias needed due to Microsoft.SPOT.Trace in .Net Micro Framework
 // (it's ambiguos with uPLibrary.Networking.M2Mqtt.Utility.Trace)
-using MqttUtility = uPLibrary.Networking.M2Mqtt.Utility;
+using MqttUtility = uPLibrary.Networking.M2MqttClient.Utility;
 using System.IO;
 
-namespace uPLibrary.Networking.M2Mqtt
+namespace uPLibrary.Networking.M2MqttClient
 {
     /// <summary>
     /// MQTT Client
@@ -167,7 +167,7 @@ namespace uPLibrary.Networking.M2Mqtt
 
         // event for peer/client disconnection
         public event ConnectionClosedEventHandler ConnectionClosed;
-        
+
         // channel to communicate over the network
         private IMqttNetworkChannel channel;
 
@@ -344,8 +344,8 @@ namespace uPLibrary.Networking.M2Mqtt
         /// <param name="sslProtocol">SSL/TLS protocol version</param>
         /// <param name="userCertificateValidationCallback">A RemoteCertificateValidationCallback delegate responsible for validating the certificate supplied by the remote party</param>
         /// <param name="userCertificateSelectionCallback">A LocalCertificateSelectionCallback delegate responsible for selecting the certificate used for authentication</param>
-        public MqttClient(string brokerHostName, int brokerPort, bool secure, MqttSslProtocols sslProtocol, 
-            RemoteCertificateValidationCallback userCertificateValidationCallback, 
+        public MqttClient(string brokerHostName, int brokerPort, bool secure, MqttSslProtocols sslProtocol,
+            RemoteCertificateValidationCallback userCertificateValidationCallback,
             LocalCertificateSelectionCallback userCertificateSelectionCallback)
             : this(brokerHostName, brokerPort, secure, null, null, sslProtocol, userCertificateValidationCallback, userCertificateSelectionCallback)
         {
@@ -1395,7 +1395,7 @@ namespace uPLibrary.Networking.M2Mqtt
 #else
                                 throw new MqttClientException(MqttClientErrorCode.WrongBrokerMessage);
 #endif
-                                
+
                             // CONNACK message received
                             case MqttMsgBase.MQTT_MSG_CONNACK_TYPE:
 
@@ -1530,7 +1530,7 @@ namespace uPLibrary.Networking.M2Mqtt
                                 this.EnqueueInternal(pubrel);
 
                                 break;
-                                
+
                             // PUBCOMP message received
                             case MqttMsgBase.MQTT_MSG_PUBCOMP_TYPE:
 
@@ -1623,7 +1623,7 @@ namespace uPLibrary.Networking.M2Mqtt
                     {
                         // [v3.1.1] scenarios the receiver MUST close the network connection
                         MqttClientException ex = e as MqttClientException;
-                        close = ((ex.ErrorCode == MqttClientErrorCode.InvalidFlagBits) || 
+                        close = ((ex.ErrorCode == MqttClientErrorCode.InvalidFlagBits) ||
                                 (ex.ErrorCode == MqttClientErrorCode.InvalidProtocolName) ||
                                 (ex.ErrorCode == MqttClientErrorCode.InvalidConnectFlags));
                     }
@@ -1634,7 +1634,7 @@ namespace uPLibrary.Networking.M2Mqtt
                         close = true;
                     }
 #endif
-                    
+
                     if (close)
                     {
                         // wake up thread that will notify connection is closing
@@ -1651,7 +1651,7 @@ namespace uPLibrary.Networking.M2Mqtt
         {
             int delta = 0;
             int wait = this.keepAlivePeriod;
-            
+
             // create event to signal that current thread is end
             this.keepAliveEventEnd = new AutoResetEvent(false);
 
@@ -1677,8 +1677,8 @@ namespace uPLibrary.Networking.M2Mqtt
                         this.OnConnectionClosing();
 #else
                         // ... send keep alive
-						this.Ping();
-						wait = this.keepAlivePeriod;
+                        this.Ping();
+                        wait = this.keepAlivePeriod;
 #endif
                     }
                     else
@@ -1846,7 +1846,7 @@ namespace uPLibrary.Networking.M2Mqtt
                             }
                         }
                     }
-                    
+
                     // all events for received messages dispatched, check if there is closing connection
                     if ((this.eventQueue.Count == 0) && this.isConnectionClosing)
                     {
@@ -2390,7 +2390,7 @@ namespace uPLibrary.Networking.M2Mqtt
                                             // current message not acknowledged
                                             if (!acknowledge)
                                             {
-                                                delta = Environment.TickCount - msgContext.Timestamp; 
+                                                delta = Environment.TickCount - msgContext.Timestamp;
                                                 // check timeout for receiving PUBCOMP since PUBREL was sent
                                                 if (delta >= this.settings.DelayOnRetry)
                                                 {
@@ -2459,7 +2459,7 @@ namespace uPLibrary.Networking.M2Mqtt
                                                 if (msgContext.Attempt > 1)
                                                     pubrel.DupFlag = true;
                                             }
-                                            
+
                                             this.Send(pubrel);
 
                                             // update timeout : minimum between delay (based on current message sent) or current timeout

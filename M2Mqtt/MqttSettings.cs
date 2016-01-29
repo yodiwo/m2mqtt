@@ -14,7 +14,7 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-namespace uPLibrary.Networking.M2Mqtt
+namespace uPLibrary.Networking.M2MqttClient
 {
     /// <summary>
     /// Settings class for the MQTT broker

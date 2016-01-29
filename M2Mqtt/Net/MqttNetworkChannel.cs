@@ -27,7 +27,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System;
 
-namespace uPLibrary.Networking.M2Mqtt
+namespace uPLibrary.Networking.M2MqttClient
 {
     /// <summary>
     /// Channel to communicate over the network

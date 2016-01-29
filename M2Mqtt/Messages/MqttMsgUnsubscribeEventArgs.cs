@@ -20,7 +20,7 @@ using System;
 using Microsoft.SPOT;
 #endif
 
-namespace uPLibrary.Networking.M2Mqtt.Messages
+namespace uPLibrary.Networking.M2MqttClient.Messages
 {
     /// <summary>
     /// Event Args class for unsubscribe request on topics

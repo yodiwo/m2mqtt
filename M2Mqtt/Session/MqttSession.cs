@@ -16,7 +16,7 @@ Contributors:
 
 using System.Collections;
 
-namespace uPLibrary.Networking.M2Mqtt.Session
+namespace uPLibrary.Networking.M2MqttClient.Session
 {
     /// <summary>
     /// MQTT Session base class

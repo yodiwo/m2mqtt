@@ -15,9 +15,9 @@ Contributors:
 */
 
 using System;
-using uPLibrary.Networking.M2Mqtt.Exceptions;
+using uPLibrary.Networking.M2MqttClient.Exceptions;
 
-namespace uPLibrary.Networking.M2Mqtt.Messages
+namespace uPLibrary.Networking.M2MqttClient.Messages
 {
     /// <summary>
     /// Class for PINGRESP message from client to broker

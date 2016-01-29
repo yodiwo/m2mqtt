@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -21,11 +21,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("M2Mqtt")]
+[assembly: AssemblyTitle("M2MqttClient")]
 [assembly: AssemblyDescription("MQTT Client Library for M2M communication")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Paolo Patierno")]
-[assembly: AssemblyProduct("M2Mqtt")]
+[assembly: AssemblyProduct("M2MqttClient")]
 [assembly: AssemblyCopyright("Copyright © Paolo Patierno 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

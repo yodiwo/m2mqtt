@@ -8,8 +8,8 @@
     <ProjectGuid>{A11AEF5A-B246-4FE8-8330-06DB73CC8074}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>uPLibrary.Networking.M2Mqtt</RootNamespace>
-    <AssemblyName>M2Mqtt.Net</AssemblyName>
+    <RootNamespace>uPLibrary.Networking.M2MqttClient</RootNamespace>
+    <AssemblyName>M2MqttClient.Net</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

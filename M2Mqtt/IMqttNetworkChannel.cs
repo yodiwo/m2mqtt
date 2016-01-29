@@ -17,7 +17,7 @@ Contributors:
 using System;
 using System.Text;
 
-namespace uPLibrary.Networking.M2Mqtt
+namespace uPLibrary.Networking.M2MqttClient
 {
     /// <summary>
     /// Interface for channel under MQTT library
@@ -60,7 +60,7 @@ namespace uPLibrary.Networking.M2Mqtt
         /// Connect to remote server
         /// </summary>
         void Connect();
-        
+
         /// <summary>
         /// Accept client connection
         /// </summary>

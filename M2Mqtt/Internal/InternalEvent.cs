@@ -14,7 +14,7 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-namespace uPLibrary.Networking.M2Mqtt.Internal
+namespace uPLibrary.Networking.M2MqttClient.Internal
 {
     /// <summary>
     /// Generic internal event for dispatching

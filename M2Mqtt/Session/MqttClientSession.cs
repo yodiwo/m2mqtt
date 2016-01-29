@@ -14,7 +14,7 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-namespace uPLibrary.Networking.M2Mqtt.Session
+namespace uPLibrary.Networking.M2MqttClient.Session
 {
     /// <summary>
     /// MQTT Client Session
