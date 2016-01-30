@@ -862,9 +862,10 @@ namespace uPLibrary.Networking.M2MqttClient
             // message enqueued
             if (enqueue)
                 return publish.MessageId;
-            // infligh queue full, message not enqueued
+            // inflight queue full, or message already in inflight queue
             else
-                throw new MqttClientException(MqttClientErrorCode.InflightQueueFull);
+                //throw new MqttClientException(MqttClientErrorCode.InflightQueueFull);
+                return 0;
         }
 
         /// <summary>
