@@ -605,18 +605,16 @@ namespace uPLibrary.Networking.M2MqttClient
                 }
                 else
                 {
-                    Console.WriteLine("connack.ReturnCode: " + connack.ReturnCode);
+                    DebugEx.TraceError("connack.ReturnCode: " + connack.ReturnCode);
+                    this.isRunning = false;
                     //this.Close();
                 }
                 return connack.ReturnCode;
             }
             catch (Exception ex)
             {
-                while (ex != null)
-                {
-                    Console.WriteLine("Exception: " + ex.Message);
-                    ex = ex.InnerException;
-                }
+                DebugEx.TraceErrorException(ex);
+                this.isRunning = false;
                 //this.Close();
                 return MqttMsgConnack.CONN_REFUSED_SERVER_UNAVAILABLE;
             }
