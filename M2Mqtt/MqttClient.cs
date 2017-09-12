@@ -626,7 +626,7 @@ namespace uPLibrary.Networking.M2MqttClient
         public void Disconnect()
         {
             MqttMsgDisconnect disconnect = new MqttMsgDisconnect();
-            this.Send(disconnect);
+            try { this.Send(disconnect); } catch { }
 
             // close client
             this.OnConnectionClosing();
