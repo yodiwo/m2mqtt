@@ -606,16 +606,15 @@ namespace uPLibrary.Networking.M2MqttClient
                 else
                 {
                     DebugEx.TraceError("connack.ReturnCode: " + connack.ReturnCode);
-                    this.isRunning = false;
-                    //this.Close();
+
+                    this.OnConnectionClosing();
                 }
                 return connack.ReturnCode;
             }
             catch (Exception ex)
             {
                 DebugEx.TraceErrorException(ex);
-                this.isRunning = false;
-                //this.Close();
+                this.OnConnectionClosing();
                 return MqttMsgConnack.CONN_REFUSED_SERVER_UNAVAILABLE;
             }
         }
@@ -660,37 +659,46 @@ namespace uPLibrary.Networking.M2MqttClient
         private void Close()
 #endif
         {
-            // stop receiving thread
-            this.isRunning = false;
+            if (this.IsConnected || this.isRunning)
+            {
+                // stop threads
+                this.isRunning = false;
 
-            // wait end receive event thread
-            if (this.receiveEventWaitHandle != null)
-                this.receiveEventWaitHandle.Set();
+                try
+                {
+                    // wait end receive event thread
+                    this.receiveEventWaitHandle?.Set();
 
-            // wait end process inflight thread
-            if (this.inflightWaitHandle != null)
-                this.inflightWaitHandle.Set();
+                    // wait end process inflight thread
+                    this.inflightWaitHandle?.Set();
+
+                    this.syncEndReceiving?.Set();
 
 #if BROKER
-            // unlock keep alive thread
-            this.keepAliveEvent.Set();
+                    // unlock keep alive thread
+                    this.keepAliveEvent?.Set();
 #else
-            // unlock keep alive thread and wait
-            this.keepAliveEvent.Set();
+                    // unlock keep alive thread and wait
+                    this.keepAliveEvent?.Set();
 
-            if (this.keepAliveEventEnd != null)
-                this.keepAliveEventEnd.WaitOne();
+                    this.keepAliveEventEnd?.WaitOne();
 #endif
 
-            // clear all queues
-            this.inflightQueue.Clear();
-            this.internalQueue.Clear();
-            this.eventQueue.Clear();
+                    // clear all queues
+                    this.inflightQueue.Clear();
+                    this.internalQueue.Clear();
+                    this.eventQueue.Clear();
+                }
+                catch { }
 
-            // close network channel
-            this.channel.Close();
+                // close network channel
+                try { this.channel.Close(); } catch { }
 
-            this.IsConnected = false;
+                this.IsConnected = false;
+
+                // client raw disconnection
+                this.OnConnectionClosed();
+            }
         }
 
         /// <summary>
@@ -889,6 +897,10 @@ namespace uPLibrary.Networking.M2MqttClient
             {
                 this.isConnectionClosing = true;
                 this.receiveEventWaitHandle.Set();
+
+                Thread.Sleep(15);
+
+                this.Close();
             }
         }
 
@@ -1004,10 +1016,7 @@ namespace uPLibrary.Networking.M2MqttClient
         /// </summary>
         private void OnConnectionClosed()
         {
-            if (this.ConnectionClosed != null)
-            {
-                this.ConnectionClosed(this, EventArgs.Empty);
-            }
+            this.ConnectionClosed?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1852,9 +1861,6 @@ namespace uPLibrary.Networking.M2MqttClient
                     {
                         // client must close connection
                         this.Close();
-
-                        // client raw disconnection
-                        this.OnConnectionClosed();
                     }
                 }
             }
