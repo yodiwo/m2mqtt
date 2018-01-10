@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>uPLibrary.Networking.M2MqttClient</RootNamespace>
-    <AssemblyName>M2MqttClient.Net</AssemblyName>
+    <AssemblyName>uPLibrary.Networking.M2MqttClient.Net</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
