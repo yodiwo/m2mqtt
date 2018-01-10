@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using uPLibrary.Networking.M2MqttClient;
+using TraceLevel = uPLibrary.Networking.M2MqttClient.Utility.TraceLevel;
+
 
 namespace TestApp
 {
@@ -11,7 +15,17 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            var cli = new MqttClient("localhost");
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+
+            uPLibrary.Networking.M2MqttClient.Utility.Trace.TraceListener = Console.WriteLine;
+            uPLibrary.Networking.M2MqttClient.Utility.Trace.TraceLevel = TraceLevel.Error
+                                                                 | TraceLevel.Warning
+                                                                 | TraceLevel.Information
+                                                                 | TraceLevel.Verbose
+                                                                 | TraceLevel.Frame;
+            System.Diagnostics.Debug.AutoFlush = false;
+
+            var cli = new MqttClient("activetrac.activategroup.co.za");
 
             cli.ConnectionClosed += Cli_ConnectionClosed;
 
@@ -19,9 +33,13 @@ namespace TestApp
             cli.MqttMsgSubscribed += Cli_MqttMsgSubscribed;
             cli.MqttMsgUnsubscribed += Cli_MqttMsgUnsubscribed;
             cli.MqttMsgPublishReceived += Cli_MqttMsgPublishReceived;
-            var rc = cli.Connect("test", "YodiPlegmaClient", "5839a85e-dde8-429a-90bf-e9793c0b181bA");
+
+            var rc = cli.Connect("cli1", "u1", "p1");
+
 
             Console.WriteLine("connected: " + rc);
+            while (true)
+                Thread.Sleep(1000);
         }
 
         private static void Cli_MqttMsgUnsubscribed(object sender, uPLibrary.Networking.M2MqttClient.Messages.MqttMsgUnsubscribedEventArgs e)

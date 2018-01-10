@@ -49,9 +49,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\M2Mqtt\M2Mqtt.Net.csproj">
+    <ProjectReference Include="..\M2Mqtt\M2MqttClient.Net.csproj">
       <Project>{a11aef5a-b246-4fe8-8330-06db73cc8074}</Project>
-      <Name>M2Mqtt.Net</Name>
+      <Name>M2MqttClient.Net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
