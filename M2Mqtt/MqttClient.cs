@@ -230,6 +230,11 @@ namespace uPLibrary.Networking.M2MqttClient
         /// </summary>
         public MqttProtocolVersion ProtocolVersion { get; set; }
 
+        /// <summary>
+        /// MQTT keep alive ending timeout
+        /// </summary>
+        public int KeepAlivePeriodTimeout { get; set; }
+
 #if BROKER
         /// <summary>
         /// MQTT Client Session
@@ -583,7 +588,8 @@ namespace uPLibrary.Networking.M2MqttClient
                     this.WillMessage = willMessage;
                     this.WillQosLevel = willQosLevel;
 
-                    this.keepAlivePeriod = keepAlivePeriod * 1000; // convert in ms
+                    this.keepAlivePeriod = keepAlivePeriod * 1000; // convert to sec
+                    this.KeepAliveEndPeriod = 5 * 1000;
 
                     // restore previous session
                     this.RestoreSession();
@@ -680,8 +686,10 @@ namespace uPLibrary.Networking.M2MqttClient
 #else
                     // unlock keep alive thread and wait
                     this.keepAliveEvent?.Set();
+                    var res = this.keepAliveEventEnd?.WaitOne(KeepAlivePeriodTimeout);
+                    if (!res.HasValue.Equals(false))
+                        DebugEx.TraceError("MQTTCLIENT: Didn't receive keepAliveEventEnd event, closing...");
 
-                    this.keepAliveEventEnd?.WaitOne();
 #endif
 
                     // clear all queues
