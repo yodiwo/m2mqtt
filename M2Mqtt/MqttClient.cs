@@ -589,7 +589,7 @@ namespace uPLibrary.Networking.M2MqttClient
                     this.WillQosLevel = willQosLevel;
 
                     this.keepAlivePeriod = keepAlivePeriod * 1000; // convert to sec
-                    this.KeepAliveEndPeriod = 5 * 1000;
+                    this.KeepAlivePeriodTimeout = 5 * 1000;
 
                     // restore previous session
                     this.RestoreSession();
