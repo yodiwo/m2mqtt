@@ -1024,7 +1024,11 @@ namespace uPLibrary.Networking.M2MqttClient
         /// </summary>
         private void OnConnectionClosed()
         {
-            this.ConnectionClosed?.Invoke(this, EventArgs.Empty);
+            try
+            {
+                this.ConnectionClosed?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
         }
 
         /// <summary>
